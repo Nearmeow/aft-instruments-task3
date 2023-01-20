@@ -2,12 +2,14 @@ package com.mariakh.framework.pages;
 
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
-public class SearchResultPage {
+public class SearchResultPage extends BasePage {
 
     @FindBy(xpath = "//h1[@class='title']")
     private WebElement title;
@@ -15,6 +17,9 @@ public class SearchResultPage {
     @FindBy(xpath = "//div[@data-id='product']")
     List<WebElement> productsOnThePage;
 
+    public SearchResultPage() {
+        PageFactory.initElements(driverManager.getDriver(), this);
+    }
 
     public void checkOpenSearchResultPage() {
         Assertions.assertTrue(title.getText().contains("Найдено")

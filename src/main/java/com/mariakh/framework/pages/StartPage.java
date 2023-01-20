@@ -1,19 +1,19 @@
 package com.mariakh.framework.pages;
 
+import com.mariakh.framework.pages.block.SearchBlock;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class StartPage {
+public class StartPage extends BasePage {
 
-    @FindBy(xpath = "//input[@class='presearch__input']")
-    private WebElement searchField;
+    private SearchBlock searchBlock = new SearchBlock();
 
-    @FindBy(xpath = "//span[@class='presearch__icon-search']")
-    private WebElement loupButton;
-
-    public void searchProduct(String product) {
-        searchField.sendKeys(product);
-        loupButton.click();
+    public StartPage() {
+        PageFactory.initElements(driverManager.getDriver(), this);
     }
+
+    public SearchBlock getSearchBlock() {
+        return searchBlock;
+    }
+
 }
