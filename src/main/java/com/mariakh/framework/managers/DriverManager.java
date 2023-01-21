@@ -3,13 +3,12 @@ package com.mariakh.framework.managers;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.time.Duration;
-
 public class DriverManager {
 
     private static DriverManager instance;
 
     private WebDriver driver;
+    private TestPropManager propManager = TestPropManager.getInstance();
 
     private DriverManager() {
     }
@@ -36,10 +35,8 @@ public class DriverManager {
     }
 
     private void initDriver() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", propManager.getProperty("path.chrome.driver.windows"));
         driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); //ожидание везде, где вызван findByElement
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10)); //проверяет загружена ли страница, прежде чем искать элемент
+
     }
 }

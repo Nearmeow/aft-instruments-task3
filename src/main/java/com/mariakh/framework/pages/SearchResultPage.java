@@ -2,10 +2,8 @@ package com.mariakh.framework.pages;
 
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
@@ -17,22 +15,20 @@ public class SearchResultPage extends BasePage {
     @FindBy(xpath = "//div[@data-id='product']")
     List<WebElement> productsOnThePage;
 
-    public SearchResultPage() {
-        PageFactory.initElements(driverManager.getDriver(), this);
-    }
-
-    public void checkOpenSearchResultPage() {
+    public SearchResultPage checkOpenSearchResultPage() {
         Assertions.assertTrue(title.getText().contains("Найдено")
                 ,"Заголовок отсутствует или не соответствует ожидаемому");
+        return pageManager.getSearchResultPage();
     }
 
-    public void findProductByCodeAndClick(String code) {
+    public ProductCardPage findProductByCodeAndClick(String code) {
         for (WebElement elem : productsOnThePage) {
             if (elem.getAttribute("data-code").equals(code)) {
                 elem.findElement(By.xpath("./a/span")).click();
-                return;
+                return pageManager.getProductCardPage();
             }
         }
         Assertions.fail("Элемент не найден");
+        return pageManager.getProductCardPage();
     }
 }

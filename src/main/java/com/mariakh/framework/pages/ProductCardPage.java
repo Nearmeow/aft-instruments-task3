@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -19,9 +18,6 @@ public class ProductCardPage extends BasePage {
     private CartBlock cartBlock = new CartBlock();
 
     private Product product = new Product();
-
-/*    @FindBy(xpath = "//div[@class='product-buy__price']")
-    private WebElement priceStr;*/
 
     @FindBy(xpath = "//div[@class='additional-sales-tabs__titles-wrap']")
     private WebElement additionalSales;
@@ -38,10 +34,6 @@ public class ProductCardPage extends BasePage {
     @FindBy(xpath = "//span[@class='cart-link-counter__badge']")
     private WebElement itemsInCart;
 
-    public ProductCardPage() {
-        PageFactory.initElements(driverManager.getDriver(), this);
-    }
-
     public SearchBlock getSearchBlock() {
         return searchBlock;
     }
@@ -50,47 +42,51 @@ public class ProductCardPage extends BasePage {
         return cartBlock;
     }
 
-    public void checkOpenPage() {
+    public ProductCardPage checkOpenPage() {
         wait.until(ExpectedConditions.visibilityOf(productCard));
         wait.until(ExpectedConditions.visibilityOf(productCard.findElement(By.className("product-buy__price"))));
+        return this;
     }
 
-    public void saveProductInfo() {
+    public ProductCardPage saveProductInfo() {
         product.setCode(parseToStringOnlyDigits(productCode.getText()));
         WebElement priceInCard = productCard.findElement(By.className("product-buy__price"));
         int price = parseStringToInt(priceInCard.getText());
         product.setPrice(price);
+        return this;
     }
 
-
-    public void clickGuaranteeButton(String tabNumber) {
+    public ProductCardPage clickGuaranteeButton(String tabNumber) {
         String xpath = String.format("./div[%s]", tabNumber);
         additionalSales.findElement(By.xpath(xpath)).click();
+        return this;
     }
 
-    public void selectNotFreeGuarantee() {
+    public ProductCardPage selectNotFreeGuarantee() {
         for (WebElement elem : guaranteeList) {
             String guaranteePriceStr = elem.findElement(By.className("product-warranty__price")).getText();
             int guaranteePrice = Integer.parseInt(guaranteePriceStr.replaceAll("\\D+",""));
             if (guaranteePrice != 0) {
                 elem.findElement(By.xpath("./span")).click();
                 product.setGuaranteePrice(guaranteePrice);
-                return;
+                return this;
             }
         }
         Assertions.fail("Гарантий с ненулевой стоимостью в списке нет");
+        return this;
     }
 
-    public void clickBuy() {
-        CartPage.addPositionToCart(product.getCode(), product);
-        itemsInCartCount++;
+    public ProductCardPage clickBuy() {
         productCard.findElement(By.xpath(".//button[contains(@class, 'buy-btn')]")).click();
-        //wait.until(ExpectedConditions.visibilityOf(itemsInCart));
-
-        ExpectedCondition<Boolean> condition = x -> itemsInCart.getText().equals(String.valueOf(itemsInCartCount));
+        productCollection.addProductToMap(product);
+        ExpectedCondition<Boolean> condition = x -> itemsInCart.getText().equals(String.valueOf(productCollection.getProductsCount()));
         wait.until(condition);
+        return this;
     }
-    private void check(String value) {
 
+    public ProductCardPage checkTotalAmount() {
+        cartBlock.checkTotalAmount();
+        return this;
     }
+
 }

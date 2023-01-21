@@ -7,13 +7,6 @@ public class Product {
     private int guaranteePrice;
 
     public Product() {
-        this.guaranteePrice = 0;
-    }
-
-    public Product(String code, int price, int guaranteePrice) {
-        this.code = code;
-        this.price = price;
-        this.guaranteePrice = 0;
     }
 
     public String getCode() {

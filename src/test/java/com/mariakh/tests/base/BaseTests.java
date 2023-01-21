@@ -1,20 +1,30 @@
 package com.mariakh.tests.base;
 
 import com.mariakh.framework.managers.DriverManager;
-import org.junit.jupiter.api.AfterEach;
+import com.mariakh.framework.managers.InitManager;
+import com.mariakh.framework.managers.PageManager;
+import com.mariakh.framework.managers.TestPropManager;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BaseTests {
 
-    private DriverManager driverManager = DriverManager.getInstance();
+    protected PageManager pageManager = PageManager.getInstance();
+    protected TestPropManager propManager = TestPropManager.getInstance();
 
+    @BeforeAll
+    public static void beforeAll() {
+        InitManager.initFramework();
+    }
     @BeforeEach
     public void before() {
-        driverManager.getDriver().get("https://www.dns-shop.ru/");
+        DriverManager.getInstance().getDriver().get(propManager.getProperty("base.url"));
     }
 
-    @AfterEach
-    public void after() {
-       driverManager.getDriver().quit();
+    @AfterAll
+    public static void afterAll() {
+        InitManager.quitFramework();
     }
 }
