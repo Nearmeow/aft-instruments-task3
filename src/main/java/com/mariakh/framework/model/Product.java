@@ -1,5 +1,7 @@
 package com.mariakh.framework.model;
 
+import java.util.Objects;
+
 public class Product {
 
     private String code;

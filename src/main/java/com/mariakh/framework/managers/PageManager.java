@@ -8,9 +8,10 @@ import com.mariakh.framework.pages.StartPage;
 public class PageManager {
 
     private static PageManager instance;
-
     private StartPage startPage;
     private CartPage cartPage;
+    private SearchResultPage searchResultPage;
+    private ProductCardPage productCardPage;
 
     private PageManager() {
     }
@@ -29,6 +30,13 @@ public class PageManager {
         return startPage;
     }
 
+    public SearchResultPage getSearchResultPage() {
+        if (searchResultPage == null) {
+            searchResultPage = new SearchResultPage();
+        }
+        return searchResultPage;
+    }
+
     public CartPage getCartPage() {
         if (cartPage == null) {
             cartPage = new CartPage();
@@ -37,11 +45,9 @@ public class PageManager {
     }
 
     public ProductCardPage getProductCardPage() {
-        return new ProductCardPage();
+        if (productCardPage == null) {
+            productCardPage = new ProductCardPage();
+        }
+        return productCardPage;
     }
-
-    public SearchResultPage getSearchResultPage() {
-        return new SearchResultPage();
-    }
-
 }

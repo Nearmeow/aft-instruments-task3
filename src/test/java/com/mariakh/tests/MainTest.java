@@ -5,19 +5,21 @@ import org.junit.jupiter.api.Test;
 
 public class MainTest extends BaseTests {
 
+    // некорректно считывает цену, если она со скидкой и старая цена так же указана
+    // надо оптимизировать page manager
     @Test
     public void test() {
         pageManager.getStartPage().getSearchBlock().searchProductAndReturnResultList(propManager.getProperty("text.for.search.first"))
                 .checkOpenSearchResultPage()
                 .findProductByCodeAndClick(propManager.getProperty("product.code.first"))
                 .checkOpenPage()
-                .saveProductInfo()
+                .saveProductInfoAndUpdate()
                 .clickGuaranteeButton(propManager.getProperty("additional.sales.guarantee.tab.number"))
                 .selectNotFreeGuarantee()
                 .clickBuy()
                 .getSearchBlock().searchProductAndReturnProductCard(propManager.getProperty("text.for.search.second"))
                 .checkOpenPage()
-                .saveProductInfo()
+                .saveProductInfoAndUpdate()
                 .clickBuy()
                 .checkTotalAmount()
                 .getCartBlock().clickOnCart()
@@ -26,8 +28,8 @@ public class MainTest extends BaseTests {
                 .checkTotalAmount()
                 .deleteProductFromCart(propManager.getProperty("product.code.second"))
                 .checkTotalAmount()
-                .increaseProductCountByCode(propManager.getProperty("product.code.first"))
-                .increaseProductCountByCode(propManager.getProperty("product.code.first"))
+                .increaseProductCount(propManager.getProperty("product.code.first"))
+                .increaseProductCount(propManager.getProperty("product.code.first"))
                 .checkTotalAmount()
                 .restoreLastRemovedProduct()
                 .checkTotalAmount();

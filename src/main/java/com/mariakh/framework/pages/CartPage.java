@@ -58,7 +58,7 @@ public class CartPage extends BasePage {
         return pageManager.getCartPage();
     }
 
-    public CartPage increaseProductCountByCode(String code) {
+    public CartPage increaseProductCount(String code) {
         WebElement productToIncrease = getWebElementByCode(code);
         productToIncrease.findElement(By.xpath(".//button[contains(@class, 'button_plus')]")).click();
         productCollection.addProductToMap(productCollection.getProductByCode(code));

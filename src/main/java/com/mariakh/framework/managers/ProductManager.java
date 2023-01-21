@@ -61,10 +61,10 @@ public class ProductManager {
     }
 
     public Integer getTotalAmountOfSavedProducts() {
-        int totalCount = 0;
+        int totalAmount = 0;
         for (Map.Entry<Product, Integer> pair : productCountMap.entrySet()) {
-            totalCount += (pair.getKey().getPrice() + pair.getKey().getGuaranteePrice()) * pair.getValue();
+            totalAmount += (pair.getKey().getPrice() + pair.getKey().getGuaranteePrice()) * pair.getValue();
         }
-        return totalCount;
+        return totalAmount;
     }
 }

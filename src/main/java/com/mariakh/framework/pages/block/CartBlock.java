@@ -3,7 +3,6 @@ package com.mariakh.framework.pages.block;
 import com.mariakh.framework.pages.BasePage;
 import com.mariakh.framework.pages.CartPage;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 

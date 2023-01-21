@@ -17,7 +17,7 @@ public class ProductCardPage extends BasePage {
     private SearchBlock searchBlock = new SearchBlock();
     private CartBlock cartBlock = new CartBlock();
 
-    private Product product = new Product();
+    private Product currentProduct;
 
     @FindBy(xpath = "//div[@class='additional-sales-tabs__titles-wrap']")
     private WebElement additionalSales;
@@ -48,27 +48,22 @@ public class ProductCardPage extends BasePage {
         return this;
     }
 
-    public ProductCardPage saveProductInfo() {
-        product.setCode(parseToStringOnlyDigits(productCode.getText()));
-        WebElement priceInCard = productCard.findElement(By.className("product-buy__price"));
-        int price = parseStringToInt(priceInCard.getText());
-        product.setPrice(price);
-        return this;
-    }
-
     public ProductCardPage clickGuaranteeButton(String tabNumber) {
         String xpath = String.format("./div[%s]", tabNumber);
-        additionalSales.findElement(By.xpath(xpath)).click();
+        WebElement guaranteeButton = additionalSales.findElement(By.xpath(xpath));
+        guaranteeButton.click();
+        Assertions.assertTrue(guaranteeButton.getText().contains("Гарантия")
+                , "Заголовок кнопки не содержит слова 'Гарантия'");
         return this;
     }
 
     public ProductCardPage selectNotFreeGuarantee() {
         for (WebElement elem : guaranteeList) {
             String guaranteePriceStr = elem.findElement(By.className("product-warranty__price")).getText();
-            int guaranteePrice = Integer.parseInt(guaranteePriceStr.replaceAll("\\D+",""));
+            int guaranteePrice = parseStringToInt(guaranteePriceStr);
             if (guaranteePrice != 0) {
                 elem.findElement(By.xpath("./span")).click();
-                product.setGuaranteePrice(guaranteePrice);
+                currentProduct.setGuaranteePrice(guaranteePrice);
                 return this;
             }
         }
@@ -78,7 +73,7 @@ public class ProductCardPage extends BasePage {
 
     public ProductCardPage clickBuy() {
         productCard.findElement(By.xpath(".//button[contains(@class, 'buy-btn')]")).click();
-        productCollection.addProductToMap(product);
+        productCollection.addProductToMap(currentProduct);
         ExpectedCondition<Boolean> condition = x -> itemsInCart.getText().equals(String.valueOf(productCollection.getProductsCount()));
         wait.until(condition);
         return this;
@@ -86,6 +81,16 @@ public class ProductCardPage extends BasePage {
 
     public ProductCardPage checkTotalAmount() {
         cartBlock.checkTotalAmount();
+        return this;
+    }
+
+        public ProductCardPage saveProductInfoAndUpdate() {
+        currentProduct = new Product();
+        currentProduct.setCode(parseToStringOnlyDigits(productCode.getText()));
+        WebElement priceBlock = productCard.findElement(By.xpath(".//div[contains(@class, 'product-buy__price-wrap_interactive')]"));
+        String priceInCard = priceBlock.findElement(By.xpath("./div[1]")).getText();
+        int price = parseStringToInt(priceInCard);
+        currentProduct.setPrice(price);
         return this;
     }
 
