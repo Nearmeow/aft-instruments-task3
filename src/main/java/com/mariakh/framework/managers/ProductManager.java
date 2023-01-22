@@ -8,14 +8,10 @@ import java.util.Map;
 public class ProductManager {
 
     private static ProductManager instance;
-    private Map<Product, Integer> productCountMap;
     private Map<String, Product> productByCodeMap;
-
     private Product lastRemovedProduct;
-    private Integer lastRemovedProductCount;
 
     private ProductManager() {
-        productCountMap = new HashMap<>();
         productByCodeMap = new HashMap<>();
     }
 
@@ -27,28 +23,21 @@ public class ProductManager {
     }
 
     public void addProductToMap(Product product) {
-        productCountMap.merge(product, 1, Integer::sum);
+        product.incCount();
         productByCodeMap.put(product.getCode(), product);
     }
 
     public void removeProduct(Product product) {
         lastRemovedProduct = product;
-        lastRemovedProductCount = productCountMap.get(product);
-
-        productCountMap.remove(product);
         productByCodeMap.remove(product.getCode());
     }
 
     public void removeProduct(String code) {
         lastRemovedProduct = getProductByCode(code);
-        lastRemovedProductCount = productCountMap.get(lastRemovedProduct);
-
-        productCountMap.remove(getProductByCode(code));
         productByCodeMap.remove(code);
     }
 
     public void restoreLastRemoved() {
-        productCountMap.put(lastRemovedProduct, lastRemovedProductCount);
         productByCodeMap.put(lastRemovedProduct.getCode(), lastRemovedProduct);
     }
 
@@ -57,14 +46,11 @@ public class ProductManager {
     }
 
     public Integer getProductsCount() {
-        return productCountMap.values().stream().mapToInt(Integer::intValue).sum();
+        return productByCodeMap.values().stream().mapToInt(Product::getCount).sum();
     }
 
     public Integer getTotalAmountOfSavedProducts() {
-        int totalAmount = 0;
-        for (Map.Entry<Product, Integer> pair : productCountMap.entrySet()) {
-            totalAmount += (pair.getKey().getPrice() + pair.getKey().getGuaranteePrice()) * pair.getValue();
-        }
-        return totalAmount;
+        return productByCodeMap.values().stream().mapToInt(value ->
+                (value.getPrice() + value.getGuaranteePrice()) * value.getCount()).sum();
     }
 }

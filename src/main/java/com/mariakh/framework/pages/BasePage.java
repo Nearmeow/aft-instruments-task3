@@ -4,8 +4,10 @@ import com.mariakh.framework.managers.DriverManager;
 import com.mariakh.framework.managers.PageManager;
 import com.mariakh.framework.managers.ProductManager;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -22,17 +24,30 @@ public class BasePage {
         PageFactory.initElements(driverManager.getDriver(), this);
     }
 
-    protected String parseToStringOnlyDigits(String string) {
+    protected String cleanString(String string) {
+        if (string.contains("₽")) {
+            int roubleSignIndex = string.indexOf("₽");
+            String valueBeforeRouble = string.substring(0, roubleSignIndex);
+            return valueBeforeRouble.replaceAll("\\D+","");
+        }
         return string.replaceAll("\\D+","");
     }
 
-    protected int parseStringToInt(String string) {
-        return Integer.parseInt(parseToStringOnlyDigits(string));
+    protected int parsePriceToInt(String string) {
+        return Integer.parseInt(cleanString(string));
     }
 
     protected WebElement scrollToElementJs(WebElement element) {
         js.executeScript("arguments[0].scrollIntoView(true);", element);
         return element;
+    }
+
+    protected void scrollToPageTop() {
+        js.executeScript("window.scrollTo(0, document.body.scrollTop);");
+    }
+
+    protected void scrollToPageBottom() {
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
     }
 
 }

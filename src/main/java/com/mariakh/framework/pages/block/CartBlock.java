@@ -18,11 +18,11 @@ public class CartBlock extends BasePage {
     private WebElement productsInCartCount;
 
     public void checkTotalAmount() {
-        Assertions.assertEquals(parseStringToInt(totalAmount.getText()), productCollection.getTotalAmountOfSavedProducts());
+        Assertions.assertEquals(parsePriceToInt(totalAmount.getText()), productCollection.getTotalAmountOfSavedProducts());
     }
 
     public Integer productsInCartCount() {
-        return parseStringToInt(productsInCartCount.getText());
+        return parsePriceToInt(productsInCartCount.getText());
     }
 
     public CartPage clickOnCart() {

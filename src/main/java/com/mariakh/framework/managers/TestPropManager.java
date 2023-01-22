@@ -6,12 +6,14 @@ import java.util.Properties;
 
 public class TestPropManager {
 
-    private final Properties properties = new Properties();
+    private final Properties appProperties = new Properties();
+    private final Properties testData = new Properties();
     private static TestPropManager instance;
 
 
     private TestPropManager() {
         loadApplicationProperties();
+        loadTestData();
     }
 
     public static TestPropManager getInstance() {
@@ -22,17 +24,33 @@ public class TestPropManager {
     }
 
     public String getProperty(String key, String defaultValue) {
-        return properties.getProperty(key, defaultValue);
+        return appProperties.getProperty(key, defaultValue);
     }
 
     public String getProperty(String key) {
-        return properties.getProperty(key);
+        return appProperties.getProperty(key);
+    }
+
+    public String getTestData(String key, String defaultValue) {
+        return testData.getProperty(key, defaultValue);
+    }
+
+    public String getTestData(String key) {
+        return testData.getProperty(key);
     }
 
     private void loadApplicationProperties() {
         String fileName = System.getProperty("propFile", "app");
         try {
-            properties.load(new FileInputStream("src/main/resources/" + fileName + ".properties"));
+            appProperties.load(new FileInputStream("src/main/resources/" + fileName + ".properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTestData() {
+        try {
+            testData.load(new FileInputStream("src/test/resources/test.data"));
         } catch (IOException e) {
             e.printStackTrace();
         }

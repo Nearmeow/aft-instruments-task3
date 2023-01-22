@@ -60,7 +60,7 @@ public class ProductCardPage extends BasePage {
     public ProductCardPage selectNotFreeGuarantee() {
         for (WebElement elem : guaranteeList) {
             String guaranteePriceStr = elem.findElement(By.className("product-warranty__price")).getText();
-            int guaranteePrice = parseStringToInt(guaranteePriceStr);
+            int guaranteePrice = parsePriceToInt(guaranteePriceStr);
             if (guaranteePrice != 0) {
                 elem.findElement(By.xpath("./span")).click();
                 currentProduct.setGuaranteePrice(guaranteePrice);
@@ -86,10 +86,10 @@ public class ProductCardPage extends BasePage {
 
         public ProductCardPage saveProductInfoAndUpdate() {
         currentProduct = new Product();
-        currentProduct.setCode(parseToStringOnlyDigits(productCode.getText()));
+        currentProduct.setCode(cleanString(productCode.getText()));
         WebElement priceBlock = productCard.findElement(By.xpath(".//div[contains(@class, 'product-buy__price-wrap_interactive')]"));
         String priceInCard = priceBlock.findElement(By.xpath("./div[1]")).getText();
-        int price = parseStringToInt(priceInCard);
+        int price = parsePriceToInt(priceInCard);
         currentProduct.setPrice(price);
         return this;
     }

@@ -23,7 +23,7 @@ public class CartPage extends BasePage {
 
     public CartPage checkProductPrices() {
         for (WebElement elem : productList) {
-            int currentPrice = parseStringToInt(elem.findElement(By.xpath(".//span[@class='price__current']")).getText());
+            int currentPrice = parsePriceToInt(elem.findElement(By.xpath(".//span[@class='price__current']")).getText());
             String currentCode = getCodeFromElement(elem);
             Product savedProduct = productCollection.getProductByCode(currentCode);
             Assertions.assertEquals(savedProduct.getPrice(), currentPrice, "Цена продукта с кодом "
@@ -44,7 +44,7 @@ public class CartPage extends BasePage {
 
     public CartPage checkTotalAmount() {
         WebElement currentPriceElement = totalAmountBlock.findElement(By.xpath(".//span[@class='price__current']"));
-        int currentTotalPrice = parseStringToInt(currentPriceElement.getText());
+        int currentTotalPrice = parsePriceToInt(currentPriceElement.getText());
         Assertions.assertEquals(productCollection.getTotalAmountOfSavedProducts()
                 , currentTotalPrice, "Общая стоимость всех товаров не совпдает с ожидаемой");
         return pageManager.getCartPage();
@@ -90,7 +90,7 @@ public class CartPage extends BasePage {
         int price = 0;
         try {
             WebElement guaranteePrice = element.findElement(By.xpath(".//following-sibling::span"));
-            price = parseStringToInt(guaranteePrice.getText());
+            price = parsePriceToInt(guaranteePrice.getText());
         } catch (NoSuchElementException ignored) {
         }
         return price;

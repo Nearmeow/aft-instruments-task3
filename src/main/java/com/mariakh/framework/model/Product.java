@@ -1,12 +1,11 @@
 package com.mariakh.framework.model;
 
-import java.util.Objects;
-
 public class Product {
 
     private String code;
     private int price;
     private int guaranteePrice;
+    private int count;
 
     public Product() {
     }
@@ -33,5 +32,13 @@ public class Product {
 
     public void setGuaranteePrice(int guaranteePrice) {
         this.guaranteePrice = guaranteePrice;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void incCount() {
+        count++;
     }
 }

@@ -5,19 +5,17 @@ import org.junit.jupiter.api.Test;
 
 public class MainTest extends BaseTests {
 
-    // некорректно считывает цену, если она со скидкой и старая цена так же указана
-    // надо оптимизировать page manager
     @Test
     public void test() {
-        pageManager.getStartPage().getSearchBlock().searchProductAndReturnResultList(propManager.getProperty("text.for.search.first"))
+        pageManager.getStartPage().getSearchBlock().searchProductAndReturnResultList(propManager.getTestData("text.for.search.first"))
                 .checkOpenSearchResultPage()
-                .findProductByCodeAndClick(propManager.getProperty("product.code.first"))
+                .findProductByCodeAndClick(propManager.getTestData("product.code.first"))
                 .checkOpenPage()
                 .saveProductInfoAndUpdate()
-                .clickGuaranteeButton(propManager.getProperty("additional.sales.guarantee.tab.number"))
+                .clickGuaranteeButton(propManager.getTestData("additional.sales.guarantee.tab.number"))
                 .selectNotFreeGuarantee()
                 .clickBuy()
-                .getSearchBlock().searchProductAndReturnProductCard(propManager.getProperty("text.for.search.second"))
+                .getSearchBlock().searchProductAndReturnProductCard(propManager.getTestData("text.for.search.second"))
                 .checkOpenPage()
                 .saveProductInfoAndUpdate()
                 .clickBuy()
@@ -26,10 +24,10 @@ public class MainTest extends BaseTests {
                 .checkProductPrices()
                 .checkGuaranteePrices()
                 .checkTotalAmount()
-                .deleteProductFromCart(propManager.getProperty("product.code.second"))
+                .deleteProductFromCart(propManager.getTestData("product.code.second"))
                 .checkTotalAmount()
-                .increaseProductCount(propManager.getProperty("product.code.first"))
-                .increaseProductCount(propManager.getProperty("product.code.first"))
+                .increaseProductCount(propManager.getTestData("product.code.first"))
+                .increaseProductCount(propManager.getTestData("product.code.first"))
                 .checkTotalAmount()
                 .restoreLastRemovedProduct()
                 .checkTotalAmount();
