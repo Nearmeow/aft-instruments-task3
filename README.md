@@ -1,1 +1,6 @@
-# aft-instruments-task3
+# Написание атотеста по заданному сценарию с использованием следующих технологий:
+- PageObject
+- PageFactory
+- Junit5
+- Selenium
+- Maven
