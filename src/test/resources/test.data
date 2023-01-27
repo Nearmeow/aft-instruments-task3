@@ -1,0 +1,9 @@
+# Наименования и коды товаров для поиска
+text.for.search.first=iphone
+product.code.first=5072935
+text.for.search.second=Apple AirPods Pro 2
+product.code.second=5072988
+product.code.sale=5051044
+product.code.on.third.page=5033464
+product.code.on.seventh.page=5317924
+product.code.not.exist=111111

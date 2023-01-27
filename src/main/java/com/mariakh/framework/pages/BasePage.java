@@ -4,7 +4,6 @@ import com.mariakh.framework.managers.DriverManager;
 import com.mariakh.framework.managers.PageManager;
 import com.mariakh.framework.managers.ProductManager;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -48,6 +47,12 @@ public class BasePage {
 
     protected void scrollToPageBottom() {
         js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    }
+
+    protected void waitTextToBe(WebElement element, String text) {
+        ExpectedCondition<Boolean> condition = x ->
+                element.getText().equals(text);
+        wait.until(condition);
     }
 
 }

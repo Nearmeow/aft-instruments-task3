@@ -5,7 +5,6 @@ import com.mariakh.framework.pages.ProductCardPage;
 import com.mariakh.framework.pages.SearchResultPage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class SearchBlock extends BasePage {
 
@@ -26,5 +25,4 @@ public class SearchBlock extends BasePage {
         loupButton.click();
         return pageManager.getProductCardPage();
     }
-
 }

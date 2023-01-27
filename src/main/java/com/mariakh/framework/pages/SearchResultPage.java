@@ -1,9 +1,8 @@
 package com.mariakh.framework.pages;
 
-import com.mariakh.framework.pages.block.PagesBlock;
+import com.mariakh.framework.pages.block.PaginationBlock;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class SearchResultPage extends BasePage {
 
-    private PagesBlock pagesBlock = new PagesBlock();
+    private PaginationBlock pagesBlock = new PaginationBlock();
 
     @FindBy(xpath = "//h1[@class='title']")
     private WebElement title;
@@ -20,13 +19,7 @@ public class SearchResultPage extends BasePage {
     @FindBy(xpath = "//div[@data-id='product']")
     private List<WebElement> productsOnThePage;
 
-/*    @FindBy(xpath = "//li[contains(@class, 'page_active')]")
-    private WebElement currentPageNumberButton;*/
-
-/*    @FindBy(xpath = "//ul[@class='pagination-widget__pages']")
-    private WebElement pagesWidget;*/
-
-    public PagesBlock getPagesBlock() {
+    public PaginationBlock getPagesBlock() {
         return pagesBlock;
     }
 
@@ -45,40 +38,10 @@ public class SearchResultPage extends BasePage {
         }
         scrollToPageBottom();
         return pagesBlock.clickNextPage().findProductByCodeAndClick(code);
-        //return goToNextPage().findProductByCodeAndClick(code);
-        //Assertions.fail("Элемент не найден");
-        //return pageManager.getProductCardPage();
     }
 
     private WebElement getProductIfOnCurrentPage(String code) {
-        for (WebElement elem : productsOnThePage) {
-            if (elem.getAttribute("data-code").equals(code)) {
-                return elem;
-            }
-        }
-        return null;
+        return productsOnThePage.stream().filter(o ->
+                o.getAttribute("data-code").equals(code)).findFirst().orElse(null);
     }
-
-    /*private SearchResultPage goToNextPage() {
-        int currentPageNumber = Integer.parseInt(currentPageNumberButton.getText());
-        String xpath = String.format(".//li[@data-page-number=%s]", currentPageNumber + 1);
-        pagesWidget.findElement(By.xpath(xpath)).click();
-        //WebElement nextButton = currentPageNumberButton.findElement(By.xpath(".//following-sibling::li"));
-        //currentPageNumberButton.findElement(By.xpath(".//following-sibling::li")).click();
-        //scrollToElementJs(nextButton).click();
-        //wait.until(ExpectedConditions.attributeContains(nextButton, "class", "page_active"));
-        //waitForDomComplete();
-        //wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-
-*//*        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*//*
-
-        return pageManager.getSearchResultPage();
-    }*/
-
-
-
 }

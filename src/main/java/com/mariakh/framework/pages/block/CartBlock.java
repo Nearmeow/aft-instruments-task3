@@ -29,5 +29,4 @@ public class CartBlock extends BasePage {
         cartButton.click();
         return pageManager.getCartPage();
     }
-
 }

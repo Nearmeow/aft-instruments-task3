@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class PagesBlock extends BasePage {
+public class PaginationBlock extends BasePage {
 
     @FindBy(xpath = "//ul[@class='pagination-widget__pages']")
     private WebElement pagesWidget;
@@ -32,8 +31,7 @@ public class PagesBlock extends BasePage {
         checkPageNumber();
         String xpath = String.format(".//a[text()=%s]", currentPageNum);
         pagesWidget.findElement(By.xpath(xpath)).click();
-        ExpectedCondition<Boolean> condition = x -> currentPageNumberButton.getText().equals(String.valueOf(currentPageNum));
-        wait.until(condition);
+        waitTextToBe(currentPageNumberButton, String.valueOf(currentPageNum));
         return pageManager.getSearchResultPage();
     }
 
@@ -42,5 +40,4 @@ public class PagesBlock extends BasePage {
             Assertions.fail(String.format("Вся выдача просмотрена (%d страниц), но элемент не был найден.", currentPageNum - 1));
         }
     }
-
 }

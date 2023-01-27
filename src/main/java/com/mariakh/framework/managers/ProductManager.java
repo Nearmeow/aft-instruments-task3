@@ -8,11 +8,11 @@ import java.util.Map;
 public class ProductManager {
 
     private static ProductManager instance;
-    private Map<String, Product> productByCodeMap;
+    private Map<String, Product> productMap;
     private Product lastRemovedProduct;
 
     private ProductManager() {
-        productByCodeMap = new HashMap<>();
+        productMap = new HashMap<>();
     }
 
     public static ProductManager getInstance() {
@@ -24,33 +24,33 @@ public class ProductManager {
 
     public void addProductToMap(Product product) {
         product.incCount();
-        productByCodeMap.put(product.getCode(), product);
+        productMap.put(product.getCode(), product);
     }
 
     public void removeProduct(Product product) {
         lastRemovedProduct = product;
-        productByCodeMap.remove(product.getCode());
+        productMap.remove(product.getCode());
     }
 
     public void removeProduct(String code) {
         lastRemovedProduct = getProductByCode(code);
-        productByCodeMap.remove(code);
+        productMap.remove(code);
     }
 
     public void restoreLastRemoved() {
-        productByCodeMap.put(lastRemovedProduct.getCode(), lastRemovedProduct);
+        productMap.put(lastRemovedProduct.getCode(), lastRemovedProduct);
     }
 
     public Product getProductByCode(String code) {
-        return productByCodeMap.get(code);
+        return productMap.get(code);
     }
 
     public Integer getProductsCount() {
-        return productByCodeMap.values().stream().mapToInt(Product::getCount).sum();
+        return productMap.values().stream().mapToInt(Product::getCount).sum();
     }
 
     public Integer getTotalAmountOfSavedProducts() {
-        return productByCodeMap.values().stream().mapToInt(value ->
+        return productMap.values().stream().mapToInt(value ->
                 (value.getPrice() + value.getGuaranteePrice()) * value.getCount()).sum();
     }
 }

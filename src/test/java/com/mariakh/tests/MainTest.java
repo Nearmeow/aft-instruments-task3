@@ -12,7 +12,6 @@ public class MainTest extends BaseTests {
                 .findProductByCodeAndClick(propManager.getTestData("product.code.first"))
                 .checkOpenPage()
                 .saveProductInfoAndUpdate()
-                .clickGuaranteeButton(propManager.getTestData("additional.sales.guarantee.tab.number"))
                 .selectNotFreeGuarantee()
                 .clickBuy()
                 .getSearchBlock().searchProductAndReturnProductCard(propManager.getTestData("text.for.search.second"))

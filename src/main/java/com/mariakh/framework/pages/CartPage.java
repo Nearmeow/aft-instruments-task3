@@ -99,5 +99,4 @@ public class CartPage extends BasePage {
     private String getCodeFromElement(WebElement element) {
         return element.findElement(By.xpath(".//div[@class='cart-items__product-code']/div")).getText();
     }
-
 }
